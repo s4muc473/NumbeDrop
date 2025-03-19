@@ -1,11 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Formulário com Inputs e Botão</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 90%; /* Aumenta o container para caber melhor em dispositivos móveis */
+            max-width: 600px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .inputs-container {
+            display: flex;
+            flex-wrap: wrap; /* Permite que os inputs se movam para a linha seguinte em telas menores */
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .inputs-container input {
+            width: 15%; /* Diminuindo a largura */
+            height: 20vh; /* Aumentando a altura */
+            padding: 10px;
+            border: 3px solid #4CAF50; /* Bordas mais fortes */
+            border-radius: 5px;
+            font-size: 5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .inputs-container input:focus {
+            border-color: #2E8B57; /* Cor da borda no foco */
+            outline: none;
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap; /* Permite que os inputs se movam para a linha seguinte em telas menores */
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .button-container button {
+            width: 100%; /* Diminuindo a largura */
+            padding: 12px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .button-container button:hover {
+            background-color: #45a049;
+        }
+
+        /* Media query para telas menores */
+        @media (max-width: 600px) {
+            .inputs-container input, .button-container input {
+                width: 15%; /* Inputs e botões ocupando toda a largura disponível em telas menores */
+            }
+        }
+
+    </style>
 </head>
 <body>
-    <h1>teste</h1>
+    <div class="container">
+        <!-- Primeira div com inputs -->
+        <div class="inputs-container">
+            <input type="number">
+            <input type="number">
+            <input type="number">
+            <input type="number">
+        </div>
+
+        <!-- Segunda div com inputs -->
+        <div class="inputs-container">
+            <input type="number">
+            <input type="number">
+            <input type="number">
+            <input type="number">
+        </div>
+
+        <!-- Botão Checar -->
+        <div class="button-container">
+            <button>Checar</button>
+        </div>
+    </div>
 </body>
 </html>
