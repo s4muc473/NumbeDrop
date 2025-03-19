@@ -22,10 +22,10 @@ app.get('/', (req, res) => {
 app.use('/api/users', userRoutes);
 
 // Iniciar o servidor local
-// const PORT = process.env.PORT || 3000;
-// app.listen(PORT, () => {
-//   console.log(`Servidor rodando na porta ${PORT}`);
-// });
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+});
 
 // Exportar para o Vercel
-module.exports = app;
+// module.exports = app;
