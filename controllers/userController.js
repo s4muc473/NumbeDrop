@@ -1,6 +1,7 @@
 const User = require('../models/user');
 
-// Função para criar um usuário
+// Função para criar um usuário 
+// teste
 exports.createUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
