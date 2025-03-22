@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário com Inputs e Botão</title>
+    <title>NumbeDrop</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -27,10 +27,9 @@
         }
 
         .inputs-container {
-            
             display: flex;
             flex-wrap: wrap; /* Permite que os inputs se movam para a linha seguinte em telas menores */
-            justify-content: space-between;
+            justify-content: center;
             gap: 10px;
             margin-bottom: 20px;
         }
@@ -38,7 +37,7 @@
         .inputs-container input {
             width: 15%; /* Diminuindo a largura */
             height: 20vh; /* Aumentando a altura */
-            padding: 10px;
+            padding-left: 8%; 
             border: 3px solid #4CAF50; /* Bordas mais fortes */
             border-radius: 5px;
             font-size: 5rem;
@@ -89,16 +88,16 @@
         <div class="inputs-container">
             <input type="number">
             <input type="number">
-            <input type="number">
-            <input type="number">
+            <!-- <input type="number">
+            <input type="number"> -->
         </div>
 
         <!-- Segunda div com inputs -->
         <div class="inputs-container">
             <input type="number">
             <input type="number">
-            <input type="number">
-            <input type="number">
+            <!-- <input type="number">
+            <input type="number"> -->
         </div>
 
         <!-- Botão Checar -->
