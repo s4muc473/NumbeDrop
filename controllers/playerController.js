@@ -7,9 +7,9 @@ exports.createPlayer = async (req, res) => {
     const playerCount = await Game.getPlayersCount();
     const { random_number } = req.body;
     let key;
-    
+
     if (playerCount >= 2) {
-      res.status(201).json({"Erro":"Numero maximo de players alcançado."});
+      res.status(201).json({ "Erro": "Numero maximo de players alcançado." });
     } else {
       if (playerCount == 0) {
         key = 1;
@@ -30,7 +30,7 @@ exports.createPlayer = async (req, res) => {
 exports.findPlayer = async (req, res) => {
   try {
     // pegar NA e ID na requisição
-    const {key, random_number } = req.params;
+    const { key, random_number } = req.params;
     // Procurar NA do Jogador com ID diferente
 
     let keyPlayer;
@@ -40,36 +40,40 @@ exports.findPlayer = async (req, res) => {
       keyPlayer = 1
     }
 
-    const player = await Player.findOne({key: keyPlayer}); 
-    res.status(200).json(player)
+    const player = await Player.findOne({ key: keyPlayer });
+
+    let randomNumberOtherPlayer = player.random_number;
+    let numerosContidos = verificarDigitos(random_number, randomNumberOtherPlayer)
+
+    if (random_number == randomNumberOtherPlayer) {
+      console.log("NUMERO CORRETO!")
+      res.status(200).json({"API":"Numero 100% correto!"});
+    } else {
+
+      console.log(random_number);
+      console.log(randomNumberOtherPlayer);
+
+      res.status(200).json(numerosContidos);
+    }
 
   } catch (error) {
     console.log(error);
-    res.status(500).json({"erro":"erro no servidor"})
+    res.status(500).json({ "erro": "erro no servidor" })
   }
 }
 
-// // Função para obter todos os usuários
-// exports.getUsers = async (req, res) => {
-//   try {
-//     const users = await User.find();
-//     res.status(200).json(users);
-//   } catch (error) {
-//     res.status(500).json({ message: 'Erro ao obter usuários', error });
-//   }
-// };
+function verificarDigitos(num1, num2) {
+  const arr = [];
+  const num1Str = num1.toString();
+  const num2Str = num2.toString();
 
-// exports.getUserById = async (req, res) => {
-//   try {
-//     const { id } = req.params;  // Pegando o ID do usuário da URL
-//     const user = await User.findById(id);  // Usando findById para buscar por índice (ID)
-    
-//     if (!user) {
-//       return res.status(404).json({ message: 'Usuário não encontrado' });
-//     }
-
-//     res.status(200).json(user);
-//   } catch (error) {
-//     res.status(500).json({ message: 'Erro ao obter usuário', error });
-//   }
-// };
+  for (let i = 0; i < num1Str.length; i++) {
+    if (!num2Str.includes(num1Str[i])) {
+      console.log(num1Str[i]);
+    } else {
+      arr.push(num1Str[i]);
+      console.log(arr);
+    }
+  }
+  return arr.length;
+}
