@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +18,8 @@
         }
 
         .container {
-            width: 90%; /* Aumenta o container para caber melhor em dispositivos móveis */
+            width: 90%;
+            /* Aumenta o container para caber melhor em dispositivos móveis */
             max-width: 600px;
             background-color: white;
             padding: 20px;
@@ -28,38 +30,41 @@
 
         .inputs-container {
             display: flex;
-            flex-wrap: wrap; /* Permite que os inputs se movam para a linha seguinte em telas menores */
+            flex-wrap: wrap;
+            /* Permite que os inputs se movam para a linha seguinte em telas menores */
             justify-content: center;
             gap: 10px;
             margin-bottom: 20px;
         }
 
         .inputs-container input {
-            width: 15%; /* Diminuindo a largura */
-            height: 20vh; /* Aumentando a altura */
-            padding-left: 8%; 
-            border: 3px solid #4CAF50; /* Bordas mais fortes */
+            width: 80%;
+            height: 20vh;
+            border: 3px solid #4CAF50;
             border-radius: 5px;
             font-size: 5rem;
+            text-align: center;
+            line-height: 20vh;
             display: flex;
-            align-items: center;
+            justify-content: center;
         }
 
+
         .inputs-container input:focus {
-            border-color: #2E8B57; /* Cor da borda no foco */
+            border-color: #2E8B57;
             outline: none;
         }
 
         .button-container {
             display: flex;
-            flex-wrap: wrap; /* Permite que os inputs se movam para a linha seguinte em telas menores */
-            justify-content: space-between;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 10px;
             margin-bottom: 20px;
         }
 
         .button-container button {
-            width: 100%; /* Diminuindo a largura */
+            width: 82%;
             padding: 12px;
             border: none;
             background-color: #4CAF50;
@@ -73,37 +78,98 @@
             background-color: #45a049;
         }
 
-        /* Media query para telas menores */
-        @media (max-width: 600px) {
-            .inputs-container input, .button-container input {
-                width: 15%; /* Inputs e botões ocupando toda a largura disponível em telas menores */
-            }
+        .my-number-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
+        .my-number-container div {
+            width: 73%;
+            height: 20vh;
+            padding: 5%;
+            border: 3px solid #4CAF50;
+            border-radius: 5px;
+            font-size: 7rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .tent-list-container {
+            width: 8%;
+            height: 71vh;
+            margin-left: 5%;
+            max-width: 600px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .tent-list-container div {
+            display: flex;
+            justify-content: center;
+        }
+
+        .tent-list-container .element {
+            display: flex;
+            justify-content: space-between;
+            padding: 2%;
+        }
+
+        .tent-list-container .element div {
+            width: 20%;
+            border-radius: 5px;
+            border: 1px solid #45a049;
+            padding: 5px;
+        }
+
+        .tent-list-container .element div:first-child {
+            width: 40%;
+            border-radius: 5px;
+            border: 1px solid #45a049;
+            padding: 5px;
+        }
+
+        @media (max-width: 600px) {
+
+            .inputs-container input,
+            .button-container input {
+                width: 15%;
+                /* Inputs e botões ocupando toda a largura disponível em telas menores */
+            }
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <!-- Primeira div com inputs -->
         <div class="inputs-container">
             <input type="number">
-            <input type="number">
-            <!-- <input type="number">
-            <input type="number"> -->
-        </div>
-
-        <!-- Segunda div com inputs -->
-        <div class="inputs-container">
-            <input type="number">
-            <input type="number">
-            <!-- <input type="number">
-            <input type="number"> -->
         </div>
 
         <!-- Botão Checar -->
         <div class="button-container">
             <button>Checar</button>
         </div>
+
+        <!-- Segunda div com inputs -->
+        <h2>My Secret Number</h2>
+        <div class="my-number-container">
+            <div>1938</div>
+        </div>
+
+    </div>
+    <div class="tent-list-container">
+        <div class="element">
+            <div>1291</div>
+            <div>3</div>
+        </div>
     </div>
 </body>
+
 </html>
