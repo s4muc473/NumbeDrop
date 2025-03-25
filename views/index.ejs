@@ -230,7 +230,7 @@
             const random_number = Math.floor(1000 + Math.random() * 9000);
 
             try {
-                const response = await fetch('http://numbe-drop.vercel.app/api/create', {
+                const response = await fetch('https://numbe-drop.vercel.app/api/create', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -268,7 +268,7 @@
 
 
             try {
-                const connection = await fetch(`http://numbe-drop.vercel.app/api/find/${key}/${chute}`);
+                const connection = await fetch(`https://numbe-drop.vercel.app/api/find/${key}/${chute}`);
                 const dados = await connection.json();
                 console.log(dados);
 
@@ -304,7 +304,7 @@
             let key = localStorage.Key;
 
             try {
-                const connection = await fetch(`http://numbe-drop.vercel.app/api/delete/${key}`);
+                const connection = await fetch(`https://numbe-drop.vercel.app/api/delete/${key}`);
                 const dados = await connection.json();
                 console.log(dados);
 
