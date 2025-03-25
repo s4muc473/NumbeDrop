@@ -17,9 +17,54 @@
             height: 100vh;
         }
 
+        ::-webkit-scrollbar {
+            width: 0px;
+        }
+
+
+        .displayInicial {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            color: #333;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .main {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            display: flex;
+            justify-content: space-around;
+            display: none;
+        }
+
         .container {
             width: 90%;
-            /* Aumenta o container para caber melhor em dispositivos móveis */
             max-width: 600px;
             background-color: white;
             padding: 20px;
@@ -31,7 +76,6 @@
         .inputs-container {
             display: flex;
             flex-wrap: wrap;
-            /* Permite que os inputs se movam para a linha seguinte em telas menores */
             justify-content: center;
             gap: 10px;
             margin-bottom: 20px;
@@ -47,6 +91,7 @@
             line-height: 20vh;
             display: flex;
             justify-content: center;
+            margin-top: 5vh;
         }
 
 
@@ -83,14 +128,12 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 10px;
-            margin-bottom: 20px;
         }
 
         .my-number-container div {
             width: 73%;
             height: 20vh;
-            padding: 5%;
-            border: 3px solid #4CAF50;
+            padding: 8%;
             border-radius: 5px;
             font-size: 7rem;
             display: flex;
@@ -98,8 +141,10 @@
         }
 
         .tent-list-container {
-            width: 8%;
+            width: 20%;
             height: 71vh;
+            overflow-y: auto;
+            scroll-behavior: smooth;
             margin-left: 5%;
             max-width: 600px;
             background-color: white;
@@ -139,37 +184,144 @@
             .inputs-container input,
             .button-container input {
                 width: 15%;
-                /* Inputs e botões ocupando toda a largura disponível em telas menores */
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <!-- Primeira div com inputs -->
-        <div class="inputs-container">
-            <input type="number">
-        </div>
-
-        <!-- Botão Checar -->
-        <div class="button-container">
-            <button>Checar</button>
-        </div>
-
-        <!-- Segunda div com inputs -->
-        <h2>My Secret Number</h2>
-        <div class="my-number-container">
-            <div>1938</div>
-        </div>
-
+    <div class="displayInicial">
+        <h1>numbe</h1>
+        <button id="btnInciar">Jogar</button>
     </div>
-    <div class="tent-list-container">
-        <div class="element">
-            <div>1291</div>
-            <div>3</div>
+    <div class="main">
+        <div class="container">
+            <!-- Primeira div com inputs -->
+            <div class="inputs-container">
+                <input type="number" id="input-chute">
+            </div>
+
+            <!-- Botão Checar -->
+            <div class="button-container">
+                <button id="btnChecar">Checar</button>
+            </div>
+
+            <!-- Segunda div com inputs -->
+            <div class="my-number-container">
+                <div id="random-number"></div>
+            </div>
+
+            <button id="btnReiniciar">Reiniciar</button>
+
+        </div>
+        <div class="tent-list-container">
+
         </div>
     </div>
+
+    <script>
+        const displayInicial = document.querySelector(".displayInicial");
+        const displayPrincipal = document.querySelector(".main");
+        const botaoIniciar = document.getElementById('btnInciar');
+        const divRandomNumber = document.getElementById('random-number');
+        const btnChecar = document.getElementById("btnChecar");
+
+        botaoIniciar.addEventListener('click', async () => {
+            const random_number = Math.floor(1000 + Math.random() * 9000);
+
+            try {
+                const response = await fetch('http://localhost:3000/api/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ random_number })
+                });
+
+                const dados = await response.json();
+                console.log(dados);
+
+                if (dados.status == 0) {
+                    alert("Numero Máximo de Jogadores Alcançado.");
+                } else {
+                    localStorage.randomNumber = random_number;
+                    localStorage.Key = dados.key;
+                    divRandomNumber.innerText = localStorage.randomNumber;
+
+                    displayInicial.style.display = "none";
+                    displayPrincipal.style.display = "flex";
+                }
+
+
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        });
+
+        btnChecar.addEventListener('click', async () => {
+            let key = localStorage.Key;
+            let input = document.getElementById("input-chute");
+            let chute = input.value;
+
+            console.log("Chave atual do jogador: ", key);
+            console.log("Chute dado pelo jogador: ", chute);
+
+
+            try {
+                const connection = await fetch(`http://localhost:3000/api/find/${key}/${chute}`);
+                const dados = await connection.json();
+                console.log(dados);
+
+                const listaDeTentativas = document.querySelector(".tent-list-container");
+                let tentativa = document.createElement('div');
+
+
+                let numeroDoChute = document.createElement('div');
+                let acertosDoChute = document.createElement('div');
+
+                numeroDoChute.innerText = chute;
+                acertosDoChute.innerText = dados.numerosContidos;
+
+                tentativa.setAttribute('class', 'element');
+
+                tentativa.appendChild(numeroDoChute);
+                tentativa.appendChild(acertosDoChute);
+
+                listaDeTentativas.insertBefore(tentativa, listaDeTentativas.firstChild);
+
+                if (dados.numerosContidos !== undefined) {
+                    console.log(`Você acertou ${dados.numerosContidos} números!`);
+                } else if (dados.API) {
+                    console.log(dados.API);
+                }
+
+            } catch (err) {
+                console.log(err);
+            }
+        });
+
+        btnReiniciar.addEventListener('click', async () => {
+            let key = localStorage.Key;
+
+            try {
+                const connection = await fetch(`http://localhost:3000/api/delete/${key}`);
+                const dados = await connection.json();
+                console.log(dados);
+
+                localStorage.randomNumber = 0;
+                localStorage.Key = 0;
+                divRandomNumber.innerText = 0;
+
+                displayInicial.style.display = "flex";
+                displayPrincipal.style.display = "none";
+
+            } catch (err) {
+                console.log(err);
+            }
+        });
+
+
+    </script>
 </body>
 
 </html>

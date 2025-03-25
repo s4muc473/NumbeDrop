@@ -9,7 +9,10 @@ exports.createPlayer = async (req, res) => {
     let key;
 
     if (playerCount >= 2) {
-      res.status(201).json({ "Erro": "Numero maximo de players alcançado." });
+      res.status(201).json({ 
+        "Erro": "Numero maximo de players alcançado.",
+        "status": "0"
+      });
     } else {
       if (playerCount == 0) {
         key = 1;
@@ -45,6 +48,7 @@ exports.findPlayer = async (req, res) => {
     let randomNumberOtherPlayer = player.random_number;
     let numerosContidos = verificarDigitos(random_number, randomNumberOtherPlayer)
 
+
     if (random_number == randomNumberOtherPlayer) {
       console.log("NUMERO CORRETO!")
       res.status(200).json({"API":"Numero 100% correto!"});
@@ -53,7 +57,9 @@ exports.findPlayer = async (req, res) => {
       console.log(random_number);
       console.log(randomNumberOtherPlayer);
 
-      res.status(200).json(numerosContidos);
+      res.status(200).json({
+        "numerosContidos":numerosContidos,
+      });
     }
 
   } catch (error) {
@@ -77,3 +83,27 @@ function verificarDigitos(num1, num2) {
   }
   return arr.length;
 }
+
+exports.deletePlayer = async (req, res) => {
+  try {
+    const { key } = req.params;
+
+    const deletedPlayer = await Player.deleteOne({ key });
+
+    if (deletedPlayer.deletedCount === 0) {
+      return res.status(404).json({
+        message: "Jogador não encontrado para deletar.",
+        status: "0"
+      });
+    }
+
+    res.status(200).json({
+      message: "Jogador deletado com sucesso.",
+      status: "1"
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Erro ao deletar jogador', error });
+  }
+};
