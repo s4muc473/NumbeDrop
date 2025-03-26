@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NumbeDrop</title>
+    <title>Numbe</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -181,9 +181,20 @@
 
         @media (max-width: 600px) {
 
-            .inputs-container input,
-            .button-container input {
-                width: 15%;
+            .inputs-container input {
+                width: 100%;
+                height: 15vh;
+            }
+
+            .main {
+                flex-direction: column;
+            }
+
+            .tent-list-container {
+                width: 90%;
+                margin-top: 5vh;
+                margin-left: 0px;
+                height: 100px;
             }
         }
     </style>
@@ -198,7 +209,16 @@
         <div class="container">
             <!-- Primeira div com inputs -->
             <div class="inputs-container">
-                <input type="number" id="input-chute">
+                <input type="number" id="input-chute" max="9999" min="0" oninput="limitDigits(this)">
+
+                <script>
+                    function limitDigits(input) {
+                        let value = input.value;
+                        if (value.length > 4) {
+                            input.value = value.slice(0, 4);  // Limita a 4 dígitos
+                        }
+                    }
+                </script>
             </div>
 
             <!-- Botão Checar -->
@@ -271,28 +291,43 @@
                 const connection = await fetch(`http://localhost:3000/api/find/${key}/${chute}`);
                 const dados = await connection.json();
                 console.log(dados);
+                localStorage.numeroExterno = dados.numeroExterno;
 
-                const listaDeTentativas = document.querySelector(".tent-list-container");
-                let tentativa = document.createElement('div');
-
-
-                let numeroDoChute = document.createElement('div');
-                let acertosDoChute = document.createElement('div');
-
-                numeroDoChute.innerText = chute;
-                acertosDoChute.innerText = dados.numerosContidos;
-
-                tentativa.setAttribute('class', 'element');
-
-                tentativa.appendChild(numeroDoChute);
-                tentativa.appendChild(acertosDoChute);
-
-                listaDeTentativas.insertBefore(tentativa, listaDeTentativas.firstChild);
 
                 if (dados.numerosContidos !== undefined) {
                     console.log(`Você acertou ${dados.numerosContidos} números!`);
+
+                    const listaDeTentativas = document.querySelector(".tent-list-container");
+                    let tentativa = document.createElement('div');
+
+
+                    let numeroDoChute = document.createElement('div');
+                    let acertosDoChute = document.createElement('div');
+
+                    numeroDoChute.innerText = chute;
+                    acertosDoChute.innerText = dados.numerosContidos;
+
+                    tentativa.setAttribute('class', 'element');
+
+                    tentativa.appendChild(numeroDoChute);
+                    tentativa.appendChild(acertosDoChute);
+
+                    listaDeTentativas.insertBefore(tentativa, listaDeTentativas.firstChild);
                 } else if (dados.API) {
                     console.log(dados.API);
+
+                    const response = await fetch('http://localhost:3000/api/game/status/:time', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ time: 2 })
+                    });
+
+                    const status = await response.json();
+                    console.log(status);
+
+                    alert("Parabens vc acertou!");
                 }
 
             } catch (err) {
@@ -311,15 +346,20 @@
                 localStorage.randomNumber = 0;
                 localStorage.Key = 0;
                 divRandomNumber.innerText = 0;
-
-                displayInicial.style.display = "flex";
-                displayPrincipal.style.display = "none";
+                location.reload();
 
             } catch (err) {
                 console.log(err);
             }
         });
 
+        setInterval(async () => {
+            const connection = await fetch(`http://localhost:3000/api/game/status/`);
+            const dados = await connection.json();
+            if (dados.time == 2) {
+                alert("Numero descoberto");
+            }
+        }, 1000);
 
     </script>
 </body>
