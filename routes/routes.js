@@ -14,3 +14,5 @@ router.get('/game/status', gameController.getGameStatus);
 // router.get('/', playerController.getUsers);
 
 module.exports = router;
+
+
