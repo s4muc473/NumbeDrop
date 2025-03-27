@@ -316,16 +316,17 @@
                 } else if (dados.API) {
                     console.log(dados.API);
 
-                    const response = await fetch('http://localhost:3000/api/game/status/:time', {
+                    const status = 2; 
+
+                    const response = await fetch(`https://numbe-drop.vercel.app/api/game/status`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ time: 2 })
+                        body: JSON.stringify({ status: status })  
                     });
 
-                    const status = await response.json();
-                    console.log(status);
+                    const dados_ = await response.json();
 
                     alert("Parabens vc acertou!");
                 }
@@ -354,12 +355,30 @@
         });
 
         setInterval(async () => {
-            const connection = await fetch(`http://localhost:3000/api/game/status/`);
+            const connection = await fetch(`https://numbe-drop.vercel.app/api/game/status/`);
             const dados = await connection.json();
-            if (dados.time == 2) {
-                alert("Numero descoberto");
+
+            if (dados.status == 2) {
+                const isUserConfirmed = confirm("Número descoberto!");
+
+                if (isUserConfirmed) {
+                    const status = 1; 
+
+                    const response = await fetch(`https://numbe-drop.vercel.app/api/game/status`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ status: status }) 
+                    });
+
+                    const dados_ = await response.json();
+                } else {
+                    console.log('teste')
+                }
             }
         }, 1000);
+
 
     </script>
 </body>

@@ -12,9 +12,6 @@ exports.getPlayersCount = async () => {
 
 exports.setStatus = async (req, res) => {
     try {
-        const game = await Game.findOne()
-        console.log(game.time);
-
         const { status } = req.body;
 
         const updatedGame = await Game.findOneAndUpdate(
@@ -37,9 +34,8 @@ exports.setStatus = async (req, res) => {
 exports.getGameStatus = async (req, res) => {
     try {
         const game = await Game.findOne()
-        console.log(game.time);
 
-        res.status(200).json({status: game.time});
+        res.status(200).json({status: game.status});
 
     } catch (error) {
         console.log(error);

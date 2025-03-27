@@ -7,8 +7,8 @@ const gameController = require('../controllers/gameController');
 router.post('/create', playerController.createPlayer);
 router.get('/find/:key/:random_number', playerController.findPlayer);
 router.get('/delete/:key', playerController.deletePlayer);
-router.post('/game/status/:time', gameController.setStatus);
-router.get('/game/status', gameController.getGameStatus);
+router.post('/game/status/', gameController.setStatus);
+router.get('/game/status/', gameController.getGameStatus);
 
 // Rota para obter todos os usuários
 // router.get('/', playerController.getUsers);
