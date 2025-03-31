@@ -72,7 +72,7 @@
             justify-content: space-around;
             display: none;
         }
-        
+
         .container {
             width: 90%;
             max-width: 600px;
@@ -133,7 +133,7 @@
 
         .tent-list-container {
             width: 93%;
-            margin-top: 5vh;
+            margin-top: 1vh;
             height: 80px;
             overflow-y: auto;
             scroll-behavior: smooth;
@@ -164,10 +164,22 @@
         }
 
         .tent-list-container .element div:first-child {
-            width: 40%;
             border-radius: 5px;
             border: 1px solid #45a049;
             padding: 5px;
+        }
+
+        .cabeçalho-chutes {
+            display: flex;
+            justify-content: space-around;
+            flex-direction: row;
+            font-size: 0.7rem;
+
+            border: 1px solid #000;
+        }
+
+        .cabeçalho-chutes:first-child {
+            margin-right: 100%;
         }
 
         @media (max-width: 600px) {
@@ -182,7 +194,7 @@
 
             .tent-list-container {
                 width: 90%;
-                margin-top: 5vh;
+                margin-top: 1vh;
                 margin-left: 0px;
                 height: 100px;
             }
@@ -205,12 +217,12 @@
                     <div class="my-number-container">
                         <div id="random-number"></div>
                     </div>
-    
+
                     <div class="button-container">
                         <button id="btnChecar">Checar</button>
                     </div>
                 </div>
-                
+
                 <script>
                     function limitDigits(input) {
                         let value = input.value;
@@ -218,11 +230,15 @@
                             input.value = value.slice(0, 4);  // Limita a 4 dígitos
                         }
                     }
-                    </script>
+                </script>
             </div>
-            
+
+            <div class="cabeçalho-chutes">
+                <p>Chute</p>
+                <p>Acertos</p>
+                <p>Posiçoes Certas</p>
+            </div>
             <div class="tent-list-container">
-    
             </div>
 
             <button id="btnReiniciar">Reiniciar</button>
@@ -277,6 +293,28 @@
             console.log("Chave atual do jogador: ", key);
             console.log("Chute dado pelo jogador: ", chute);
 
+            const connection_time = await fetch('http://localhost:3000/api/game/time')
+            const time = await connection_time.json();
+            let newTime;
+
+            // desatualizado :(
+            if (time.time == 1) {
+                newTime = 2;
+            } else {
+                newTime = 1;
+            }
+
+            console.log(newTime)
+
+            const response = await fetch(`http://localhost:3000/api/game/time`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ time: newTime })
+            });
+
+            const dados_ = await response.json();
 
             try {
                 const connection = await fetch(`http://localhost:3000/api/find/${key}/${chute}`);
@@ -294,27 +332,30 @@
 
                     let numeroDoChute = document.createElement('div');
                     let acertosDoChute = document.createElement('div');
+                    let acertosPosicao = document.createElement('div');
 
                     numeroDoChute.innerText = chute;
                     acertosDoChute.innerText = dados.numerosContidos;
+                    acertosPosicao.innerText = dados.numerosMesmaPosicao;
 
                     tentativa.setAttribute('class', 'element');
 
                     tentativa.appendChild(numeroDoChute);
                     tentativa.appendChild(acertosDoChute);
+                    tentativa.appendChild(acertosPosicao);
 
                     listaDeTentativas.insertBefore(tentativa, listaDeTentativas.firstChild);
                 } else if (dados.API) {
                     console.log(dados.API);
 
-                    const status = 2; 
+                    const status = 2;
 
                     const response = await fetch(`http://localhost:3000/api/game/status`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ status: status })  
+                        body: JSON.stringify({ status: status })
                     });
 
                     const dados_ = await response.json();
@@ -346,21 +387,21 @@
         });
 
         setInterval(async () => {
-            const connection = await fetch(`http://localhost:3000/api/game/status/`);
-            const dados = await connection.json();
+            const connection_status = await fetch(`http://localhost:3000/api/game/status/`);
+            const status = await connection_status.json();
 
-            if (dados.status == 2) {
+            if (status.status == 2) {
                 const isUserConfirmed = confirm("Número descoberto!");
 
                 if (isUserConfirmed) {
-                    const status = 1; 
+                    const status = 1;
 
                     const response = await fetch(`http://localhost:3000/api/game/status`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ status: status }) 
+                        body: JSON.stringify({ status: status })
                     });
 
                     const dados_ = await response.json();
@@ -368,9 +409,18 @@
                     console.log('teste')
                 }
             }
+
+            const connection_time = await fetch('http://localhost:3000/api/game/time')
+            const time = await connection_time.json();
+
+            if (time.time != localStorage.Key && localStorage.Key != 0) {
+                // btnChecar.disabled = true; 
+                btnChecar.style.backgroundColor = "transparent";
+            } else {
+                // btnChecar.disabled = false; 
+                btnChecar.style.backgroundColor = "#53DD6C";
+            }
         }, 1000);
-
-
     </script>
 </body>
 

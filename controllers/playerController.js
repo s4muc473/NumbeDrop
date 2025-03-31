@@ -1,5 +1,6 @@
 const Player = require('../models/player');
 const Game = require('../controllers/gameController');
+const { json } = require('express');
 
 // Função para criar um usuário 
 exports.createPlayer = async (req, res) => {
@@ -46,7 +47,7 @@ exports.findPlayer = async (req, res) => {
     const player = await Player.findOne({ key: keyPlayer });
 
     let randomNumberOtherPlayer = player.random_number;
-    let numerosContidos = verificarDigitos(random_number, randomNumberOtherPlayer)
+    let digitos = verificarDigitos(random_number, randomNumberOtherPlayer);
 
 
     if (random_number == randomNumberOtherPlayer) {
@@ -57,9 +58,7 @@ exports.findPlayer = async (req, res) => {
       console.log(random_number);
       console.log(randomNumberOtherPlayer);
 
-      res.status(200).json({
-        "numerosContidos":numerosContidos,
-      });
+      res.status(200).json(digitos);
     }
 
   } catch (error) {
@@ -70,6 +69,7 @@ exports.findPlayer = async (req, res) => {
 
 function verificarDigitos(num1, num2) {
   const arr = [];
+  const arrNumPos = [];
   const num1Str = num1.toString();
   const num2Str = num2.toString();
 
@@ -77,11 +77,21 @@ function verificarDigitos(num1, num2) {
     if (!num2Str.includes(num1Str[i])) {
       console.log(num1Str[i]);
     } else {
+      if (num1Str[i] == num2Str[i]) {
+        console.log(num1Str[i]+"="+num2Str[i])
+        arrNumPos.push(num1Str[i]);
+      }
       arr.push(num1Str[i]);
       console.log(arr);
     }
   }
-  return arr.length;
+
+  let res = {
+    'numerosContidos':arr.length,
+    'numerosMesmaPosicao':arrNumPos.length
+  };
+
+  return res;
 }
 
 exports.deletePlayer = async (req, res) => {

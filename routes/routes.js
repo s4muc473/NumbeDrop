@@ -9,6 +9,8 @@ router.get('/find/:key/:random_number', playerController.findPlayer);
 router.get('/delete/:key', playerController.deletePlayer);
 router.post('/game/status/', gameController.setStatus);
 router.get('/game/status/', gameController.getGameStatus);
+router.get('/game/time/', gameController.getTimeStatus);
+router.post('/game/time/',gameController.setTime);
 
 // Rota para obter todos os usuários
 // router.get('/', playerController.getUsers);
