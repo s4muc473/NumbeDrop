@@ -423,7 +423,7 @@
                     allowOutsideClick: false
                 }).then(async (result) => {
                     if (result.isConfirmed) {
-                        const status = 0; // Pode ajustar conforme a lógica do jogo
+                        const status = 3; // Pode ajustar conforme a lógica do jogo
 
                         const response = await fetch(`${url}/game/status`, {
                             method: 'POST',
@@ -450,7 +450,7 @@
                     allowOutsideClick: false
                 }).then(async (result) => {
                     if (result.isConfirmed) {
-                        const status = 1;
+                        const status = 3;
 
                         const response = await fetch(`${url}/game/status`, {
                             method: 'POST',
