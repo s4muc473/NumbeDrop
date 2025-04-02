@@ -355,8 +355,13 @@
                     listaDeTentativas.insertBefore(tentativa, listaDeTentativas.firstChild);
                 } else if (dados.API) {
                     console.log(dados.API);
+                    let status;
 
-                    const status = 2;
+                    if (localStorage.Key == 1) {
+                        status = 1; // Player 1 ganha
+                    } else if (localStorage.Key == 2) {
+                        status = 2 // Player 2 ganha
+                    }
 
                     const response = await fetch(`${url}/game/status`, {
                         method: 'POST',
@@ -364,33 +369,6 @@
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({ status: status })
-                    });
-                    
-                    Swal.fire({
-                        title: "🎉 Parabéns! 🎉",
-                        text: "Você descobriu o número do adversário!",
-                        icon: "success",
-                        confirmButtonText: "Continuar",
-                        background: "#1e1e1e",
-                        color: "#fff",
-                        confirmButtonColor: "#00ff99",
-                        allowOutsideClick: false
-                    }).then(async (result) => {
-                        if (result.isConfirmed) {
-                            const status = 1;
-    
-                            const response = await fetch(`${url}/game/status`, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({ status: status })
-                            });
-    
-                            const dados_ = await response.json();
-                        } else {
-                            console.log('teste');
-                        }
                     });
                 }
 
@@ -411,6 +389,14 @@
                 const dados = await connection.json();
                 console.log(dados);
 
+                const response = await fetch(`${url}/game/status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ status: 0 })
+                });
+
                 localStorage.randomNumber = 0;
                 localStorage.Key = 0;
                 divRandomNumber.innerText = 0;
@@ -425,7 +411,7 @@
             const connection_status = await fetch(`${url}/game/status/`);
             const status = await connection_status.json();
 
-            if (status.status == 2) {
+            if (status.status != localStorage.Key) {
                 Swal.fire({
                     title: "😢 Você Perdeu!",
                     text: "Seu número foi descoberto pelo adversário!",
@@ -450,6 +436,33 @@
                         const dados_ = await response.json();
                     } else {
                         console.log('Jogador não confirmou');
+                    }
+                });
+            } else if (status.status == localStorage.Key) {
+                Swal.fire({
+                    title: "🎉 Parabéns! 🎉",
+                    text: "Você descobriu o número do adversário!",
+                    icon: "success",
+                    confirmButtonText: "Continuar",
+                    background: "#1e1e1e",
+                    color: "#fff",
+                    confirmButtonColor: "#00ff99",
+                    allowOutsideClick: false
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        const status = 1;
+
+                        const response = await fetch(`${url}/game/status`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ status: status })
+                        });
+
+                        const dados_ = await response.json();
+                    } else {
+                        console.log('teste');
                     }
                 });
             }
