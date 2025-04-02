@@ -365,36 +365,37 @@
                         },
                         body: JSON.stringify({ status: status })
                     });
+                    
+                    Swal.fire({
+                        title: "🎉 Parabéns! 🎉",
+                        text: "Você descobriu o número do adversário!",
+                        icon: "success",
+                        confirmButtonText: "Continuar",
+                        background: "#1e1e1e",
+                        color: "#fff",
+                        confirmButtonColor: "#00ff99",
+                        allowOutsideClick: false
+                    }).then(async (result) => {
+                        if (result.isConfirmed) {
+                            const status = 1;
+    
+                            const response = await fetch(`${url}/game/status`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ status: status })
+                            });
+    
+                            const dados_ = await response.json();
+                        } else {
+                            console.log('teste');
+                        }
+                    });
                 }
 
                 const dados_ = await response.json();
 
-                Swal.fire({
-                    title: "🎉 Parabéns! 🎉",
-                    text: "Você descobriu o número do adversário!",
-                    icon: "success",
-                    confirmButtonText: "Continuar",
-                    background: "#1e1e1e",
-                    color: "#fff",
-                    confirmButtonColor: "#00ff99",
-                    allowOutsideClick: false
-                }).then(async (result) => {
-                    if (result.isConfirmed) {
-                        const status = 1;
-
-                        const response = await fetch(`${url}/game/status`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ status: status })
-                        });
-
-                        const dados_ = await response.json();
-                    } else {
-                        console.log('teste');
-                    }
-                });
 
             } catch (err) {
                 console.log(err);
