@@ -257,8 +257,8 @@
         const divRandomNumber = document.getElementById('random-number');
         const btnChecar = document.getElementById("btnChecar");
 
-        const url = "https://numbe-drop.vercel.app/api";
-        // const url = "http://localhost:3000/api";
+        // const url = "https://numbe-drop.vercel.app/api";
+        const url = "http://localhost:3000/api";
 
         botaoIniciar.addEventListener('click', async () => {
             botaoIniciar.disabled = true;
@@ -394,7 +394,15 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ status: 0 })
+                    body: JSON.stringify({ status: 3 })
+                });
+
+                const connect = await fetch(`${url}/game/time`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ time: 1 })
                 });
 
                 localStorage.randomNumber = 0;
@@ -416,14 +424,14 @@
                     title: "😢 Você Perdeu!",
                     text: "Seu número foi descoberto pelo adversário!",
                     icon: "error",
-                    confirmButtonText: "Tentar Novamente",
+                    confirmButtonText: "Fechar",
                     background: "#1e1e1e",
                     color: "#fff",
                     confirmButtonColor: "#ff4444",
                     allowOutsideClick: false
                 }).then(async (result) => {
                     if (result.isConfirmed) {
-                        const status = 3; 
+                        const status = 3;
 
                         const response = await fetch(`${url}/game/status`, {
                             method: 'POST',
@@ -467,16 +475,16 @@
                 });
             }
 
-            // const connection_time = await fetch(`${url}/game/time`);
-            // const time = await connection_time.json();
+            const connection_time = await fetch(`${url}/game/time`);
+            const time = await connection_time.json();
 
-            // if (time.time != localStorage.Key && localStorage.Key != 0) {
-            //     // btnChecar.disabled = true; 
-            //     btnChecar.style.display = "none";
-            // } else {
-            //     // btnChecar.disabled = false; 
-            //     btnChecar.style.display = "block";
-            // }
+            if (time.time != localStorage.Key && localStorage.Key != 0) {
+                // btnChecar.disabled = true; 
+                btnChecar.style.display = "none";
+            } else {
+                // btnChecar.disabled = false; 
+                btnChecar.style.display = "block";
+            }
         }, 1000);
     </script>
 </body>
